@@ -1,0 +1,10 @@
+# Ignore every files
+
+*
+
+# Except those we want
+
+!.gitignore
+
+!*.hpp
+!*.inl
