@@ -1,0 +1,3 @@
+[submodule "Libraries/SFML"]
+	path = Libraries/SFML
+	url = git://github.com/SFML/SFML.git
