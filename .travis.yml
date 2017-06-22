@@ -1,0 +1,31 @@
+notifications:
+  email: false
+language:
+- cpp
+os:
+- linux
+- osx
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - libopenal-dev
+    - libjpeg-dev
+    - libudev-dev
+    - libxrandr-dev
+    - libfreetype6-dev
+    - libvorbis-dev
+    - libflac-dev
+    - libsfml-dev
+    - gcc-5
+    - g++-5
+install:
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then export CXX="g++-5"; fi
+- git clone --recursive https://github.com/Taktix-MMO/Taktix-Engine.git
+- cd Taktix-Engine
+script:
+- cd Build
+- cmake ..
+- make -j
+- ./Minimal_Application
