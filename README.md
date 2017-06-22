@@ -1,7 +1,7 @@
 # Taktix-Engine
 A 2D engine written in C++ using SFML.
 # Installation
-## Linux
+### Linux
 First, you will need to have some libraries installed :
 
 * pthread
