@@ -83,8 +83,11 @@ set(SFML_VERSION_OK TRUE)
 if(SFML_FIND_VERSION AND SFML_INCLUDE_DIR)
     # extract the major and minor version numbers from SFML/Config.hpp
     # we have to handle framework a little bit differently:
-    set(SFML_CONFIG_HPP_INPUT "${SFML_INCLUDE_DIR}/SFML/Config.hpp")
-
+    if("${SFML_INCLUDE_DIR}" MATCHES "SFML.framework")
+        set(SFML_CONFIG_HPP_INPUT "${SFML_INCLUDE_DIR}/Headers/Config.hpp")
+    else()
+        set(SFML_CONFIG_HPP_INPUT "${SFML_INCLUDE_DIR}/SFML/Config.hpp")
+    endif()
     FILE(READ "${SFML_CONFIG_HPP_INPUT}" SFML_CONFIG_HPP_CONTENTS)
     STRING(REGEX REPLACE ".*#define SFML_VERSION_MAJOR ([0-9]+).*" "\\1" SFML_VERSION_MAJOR "${SFML_CONFIG_HPP_CONTENTS}")
     STRING(REGEX REPLACE ".*#define SFML_VERSION_MINOR ([0-9]+).*" "\\1" SFML_VERSION_MINOR "${SFML_CONFIG_HPP_CONTENTS}")
