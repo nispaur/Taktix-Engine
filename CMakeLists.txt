@@ -40,19 +40,30 @@ FILE(
   "${CMAKE_SOURCE_DIR}/Sources/*.cpp"
 )
 
-# Create executable with its sources
+# Create application with Taktix-Engine sources
 
-ADD_EXECUTABLE( "Taktix" ${SOURCES} )
+ADD_EXECUTABLE( "Taktix" "Application/main.cpp" ${SOURCES} )
 
-# Link SFML with the executable
+# Create tests executables with Taktix-Engine sources
+
+ADD_EXECUTABLE( "Minimal_Application" "Tests/Minimal_Application/main.cpp" ${SOURCES} )
+
+# Link SFML with the application
 
 TARGET_LINK_LIBRARIES( "Taktix" ${SFML_LIBRARIES} ${SFML_DEPENDENCIES} )
 
-# Copy includes folder in destination folder
+# Link SFML with tests executables
 
-FILE( COPY Assets DESTINATION "${CMAKE_SOURCE_DIR}/Build/." )
-FILE( COPY Includes DESTINATION "${CMAKE_SOURCE_DIR}/Build/." )
+TARGET_LINK_LIBRARIES( "Minimal_Application" ${SFML_LIBRARIES} ${SFML_DEPENDENCIES} )
 
-# Put the executable in the same folder
+# Copy includes folder in Build/ folder
+
+FILE( COPY "${CMAKE_SOURCE_DIR}/Assets" DESTINATION "${CMAKE_SOURCE_DIR}/Build/." )
+
+# Put the executable in Build/ folder
 
 INSTALL( TARGETS "Taktix" RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/Build/." )
+
+# Put the tests executables in Build/ folder
+
+INSTALL( TARGETS "Minimal_Application" RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/Build/." )
