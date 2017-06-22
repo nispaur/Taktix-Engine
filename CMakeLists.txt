@@ -14,6 +14,10 @@ SET( Taktix_VERSION_MINOR 0 )
 SET( CMAKE_CXX_STANDARD 11 )
 SET( CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++11 -g ${CMAKE_CXX_FLAGS}" )
 
+# Set tests executables names
+
+SET( MINIMAL_APPLICATION_NAME "Minimal_Application" )
+
 # Update CMake's path
 
 SET( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH} )
@@ -46,7 +50,7 @@ ADD_EXECUTABLE( "Taktix" "Application/main.cpp" ${SOURCES} )
 
 # Create tests executables with Taktix-Engine sources
 
-ADD_EXECUTABLE( "Minimal_Application" "Tests/Minimal_Application/main.cpp" ${SOURCES} )
+ADD_EXECUTABLE( ${MINIMAL_APPLICATION_NAME} "Tests/Minimal_Application/main.cpp" ${SOURCES} )
 
 # Link SFML with the application
 
@@ -54,7 +58,7 @@ TARGET_LINK_LIBRARIES( "Taktix" ${SFML_LIBRARIES} ${SFML_DEPENDENCIES} )
 
 # Link SFML with tests executables
 
-TARGET_LINK_LIBRARIES( "Minimal_Application" ${SFML_LIBRARIES} ${SFML_DEPENDENCIES} )
+TARGET_LINK_LIBRARIES( ${MINIMAL_APPLICATION_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES} )
 
 # Copy includes folder in Build/ folder
 
@@ -66,4 +70,8 @@ INSTALL( TARGETS "Taktix" RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/Build/." )
 
 # Put the tests executables in Build/ folder
 
-INSTALL( TARGETS "Minimal_Application" RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/Build/." )
+INSTALL( TARGETS ${MINIMAL_APPLICATION_NAME} RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/Build/." )
+
+ADD_CUSTOM_TARGET( Tests DEPENDS
+    ${MINIMAL_APPLICATION_NAME}
+)
