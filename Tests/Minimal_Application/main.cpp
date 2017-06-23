@@ -9,16 +9,9 @@ int main( int argc, char * argv[] )
     sf::CircleShape shape( 100.0f );
     shape.setFillColor( sf::Color::Green );
 
-    sf::Clock clock;
-
     while ( window.isOpen() )
     {
         sf::Event event;
-
-        if ( clock.getElapsedTime().asSeconds() >= 3.0f )
-        {
-            window.close();
-        }
 
         while ( window.pollEvent( event ) )
         {
