@@ -1,5 +1,7 @@
 #include <Engine/TaktixEngine.hpp>
 
+#include <Engine/Managers/InputManager.hpp>
+
 namespace Tx
 {
     namespace Engine
@@ -38,14 +40,7 @@ namespace Tx
 
             while ( m_renderWindow.pollEvent( event ) )
             {
-                switch ( event.type )
-                {
-                    case sf::Event::Closed:
-                        m_renderWindow.close();
-                        break;
-                    default:
-                        break;
-                }
+                InputManager::instance()->handleEvent( event );
             }
         }
 
