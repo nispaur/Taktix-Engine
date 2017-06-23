@@ -11,6 +11,8 @@ namespace Tx
     {
         class TaktixEngine : public Core::Singleton<TaktixEngine>
         {
+            friend class InputManager;
+
         public:
             TaktixEngine();
             ~TaktixEngine();
