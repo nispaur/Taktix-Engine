@@ -19,7 +19,6 @@ addons:
     - libfreetype6-dev
     - libvorbis-dev
     - libflac-dev
-    - libsfml-dev
     - gcc-5
     - g++-5
     - libudev-dev
@@ -27,6 +26,7 @@ addons:
     - mesa-common-dev
     - libgl1-mesa-dev
     - libglu1-mesa-dev
+
 install:
 - if [ "$TRAVIS_OS_NAME" == "linux" ]; then export CXX="g++-5"; fi
 - git clone --recursive https://github.com/Taktix-MMO/Taktix-Engine.git
@@ -36,13 +36,17 @@ before_script:
 # Nvidia drivers ?
 - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ trusty multiverse" && sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ trusty-backports universe" && sudo apt-get update -qq && sudo apt-get install -qq nvidia-cg-dev swig3.0 ; fi
 - ulimit -c unlimited -S       # enable core dumps
+- "export DISPLAY=:99.0"
+- wget https://www.sfml-dev.org/files/SFML-2.4.2-linux-gcc-64-bit.tar.gz -O /tmp/sfml.tar.gz
+- tar -xzvf /tmp/sfml.tar.gz
+- sudo cp -r SFML-2.4.2/* /usr/
 - "sh -e /etc/init.d/xvfb start"
 - sleep 3 # give xvfb some time to start
-
 script:
 - cd Build
 - cmake -G 'Unix Makefiles' ..
 - make -j
+- "export DISPLAY=:99.0"
 - "./Minimal_Application"
 
 # Show coredump if test app crashed
