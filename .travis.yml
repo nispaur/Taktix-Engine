@@ -36,7 +36,6 @@ before_script:
 # Nvidia drivers ?
 - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ trusty multiverse" && sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ trusty-backports universe" && sudo apt-get update -qq && sudo apt-get install -qq nvidia-cg-dev swig3.0 ; fi
 - ulimit -c unlimited -S       # enable core dumps
-- export DISPLAY=:93.0
 - "sh -e /etc/init.d/xvfb start"
 - sleep 3 # give xvfb some time to start
 
@@ -44,7 +43,7 @@ script:
 - cd Build
 - cmake -G 'Unix Makefiles' ..
 - make -j
-- "env DISPLAY=:93.0 ./Minimal_Application"
+- "./Minimal_Application"
 
 # Show coredump if test app crashed
 after_failure:
