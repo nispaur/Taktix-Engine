@@ -21,12 +21,22 @@ addons:
     - libsfml-dev
     - gcc-5
     - g++-5
+
 install:
 - if [ "$TRAVIS_OS_NAME" == "linux" ]; then export CXX="g++-5"; fi
 - git clone --recursive https://github.com/Taktix-MMO/Taktix-Engine.git
 - cd Taktix-Engine
+
+before_script:
+- sudo apt-get install -y xpra xserver-xorg-video-dummy
+- "xpra --xvfb=\"Xorg +extension GLX -config `pwd`/Tests/dummy.xorg.conf -logfile ${HOME}/.xpra/xorg.log\"  start :9"
+
 script:
 - cd Build
 - cmake -G 'Unix Makefiles' ..
 - make -j
-- ./Minimal_Application
+- "env DISPLAY=:9 ./Minimal_Application"
+
+after_script:
+- "xpra stop :9"
+- "cat ~/.xpra/*"
