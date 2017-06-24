@@ -23,6 +23,6 @@ namespace Tx
     } // namespace Core
 } // namespace Tx
 
-#include "Singleton.inl"
+#include <Core/Patterns/Singleton.inl>
 
 #endif // HEADER_SINGLETON_HPP
