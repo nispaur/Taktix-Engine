@@ -29,6 +29,8 @@ namespace Tx
             void buttonPressed( const sf::Mouse::Button& button );
             void buttonReleased( const sf::Mouse::Button& button );
 
+            void handleWindowResize( float width, float height );
+
             void releaseInputsInternal();
 
         private:

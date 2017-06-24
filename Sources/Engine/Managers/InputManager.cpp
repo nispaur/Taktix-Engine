@@ -27,7 +27,10 @@ namespace Tx
                     break;
                 case sf::Event::Resized:
                     {
-                        // Will be implemented later...
+                        float width = static_cast<float>( event.size.width );
+                        float height = static_cast<float>( event.size.height );
+
+                        handleWindowResize( width, height );
                     }
                     break;
                 case sf::Event::LostFocus:
@@ -177,6 +180,16 @@ namespace Tx
         void InputManager::buttonReleased( const sf::Mouse::Button& button )
         {
             m_buttonsPressed[button] = false;
+        }
+
+        void InputManager::handleWindowResize( float width, float height )
+        {
+
+            sf::FloatRect dimensions( 0.0f, 0.0f, width, height );
+
+            sf::View view = sf::View( dimensions );
+
+            TaktixEngine::instance()->m_renderWindow.setView( view );
         }
 
         void InputManager::releaseInputsInternal()
