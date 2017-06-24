@@ -1,4 +1,5 @@
 dist: trusty
+sudo: required
 notifications:
   email: false
 language:
@@ -29,14 +30,19 @@ install:
 
 before_script:
 - sudo apt-get install -y xpra xserver-xorg-video-dummy
-- "xpra --xvfb=\"Xorg +extension GLX -config `pwd`/Tests/dummy.xorg.conf -logfile ${HOME}/.xpra/xorg.log\"  start :9"
-
+- export DISPLAY=:93
+- export LIBGL_ALWAYS_SOFTWARE=1
+- "xpra --xvfb=\"Xorg +extension GLX +extension RANDR +extension RENDER -config `pwd`/Tests/dummy.xorg.conf -logfile ${HOME}/.xpra/xorg.log\"  start :93"
+- sleep 3 
+- LIBGL_ALWAYS_SOFTWARE=1 glxinfo
+- glxinfo
+- cat ${HOME}/.xpra/xorg.log
 script:
 - cd Build
 - cmake -G 'Unix Makefiles' ..
 - make -j
-- "env DISPLAY=:9 ./Minimal_Application"
+- "env DISPLAY=:93 ./Minimal_Application"
 
 after_script:
-- "xpra stop :9"
+- "xpra stop :93"
 - "cat ~/.xpra/*"
