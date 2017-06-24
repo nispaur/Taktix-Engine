@@ -1,11 +1,11 @@
 dist: trusty
 sudo: required
+# WARN: APT Caching gives faster builds but compatible w/ osx without matrix:
 notifications:
   email: false
-language:
-- cpp
-os:
-- linux
+language: cpp
+os: linux
+cache: apt
 # - osx # Disabling osx for now
 addons:
   apt:
@@ -33,14 +33,12 @@ install:
 - cd Taktix-Engine
 
 before_script:
-# Nvidia drivers ?
-- if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ trusty multiverse" && sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ trusty-backports universe" && sudo apt-get update -qq && sudo apt-get install -qq nvidia-cg-dev swig3.0 ; fi
-- ulimit -c unlimited -S       # enable core dumps
-- "export DISPLAY=:99.0"
+- ulimit -c unlimited -S  # enable core dumps
 - wget https://www.sfml-dev.org/files/SFML-2.4.2-linux-gcc-64-bit.tar.gz -O /tmp/sfml.tar.gz
 - tar -xzvf /tmp/sfml.tar.gz
 - sudo cp -r SFML-2.4.2/* /usr/
-- "sh -e /etc/init.d/xvfb start"
+- "export DISPLAY=:99.0"
+- "sh -e /etc/init.d/xvfb start" # Xvfb server start on display :99.0
 - sleep 3 # give xvfb some time to start
 script:
 - cd Build
