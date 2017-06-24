@@ -23,8 +23,7 @@ addons:
     - gcc-5
     - g++-5
     - libudev-dev
-    - mesa-utils
-    - libgl1-mesa-glx
+    - gdb
 
 install:
 - if [ "$TRAVIS_OS_NAME" == "linux" ]; then export CXX="g++-5"; fi
@@ -32,20 +31,19 @@ install:
 - cd Taktix-Engine
 
 before_script:
-- sudo apt-get install -y xpra xserver-xorg-video-dummy
+- ulimit -c unlimited -S       # enable core dumps
 - export DISPLAY=:93
 - export LIBGL_ALWAYS_SOFTWARE=1
-- "xpra --xvfb=\"Xorg +extension GLX +extension RANDR +extension RENDER -config `pwd`/Tests/dummy.xorg.conf -logfile ${HOME}/.xpra/xorg.log\"  start :93"
-- sleep 3 
-- LIBGL_ALWAYS_SOFTWARE=1 glxinfo
-- glxinfo
-- cat ${HOME}/.xpra/xorg.log
+- "sh -e /etc/init.d/xvfb start"
+- sleep 3 # give xvfb some time to start
+
 script:
 - cd Build
 - cmake -G 'Unix Makefiles' ..
 - make -j
 - "env DISPLAY=:93 ./Minimal_Application"
 
-after_script:
-- "xpra stop :93"
-- "cat ~/.xpra/*"
+# Show coredump if test app crashed
+after_failure:
+- COREFILE=$(find . -maxdepth 1 -name "core*" | head -n 1) # find core file
+- if [[ -f "$COREFILE" ]]; then gdb -c "$COREFILE" example -ex "thread apply all bt" -ex "set pagination 0" -batch; fi
