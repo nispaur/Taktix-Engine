@@ -1,3 +1,4 @@
+dist: trusty
 notifications:
   email: false
 language:
@@ -26,6 +27,6 @@ install:
 - cd Taktix-Engine
 script:
 - cd Build
-- cmake ..
+- cmake -G 'Unix Makefiles' ..
 - make -j
 - ./Minimal_Application
